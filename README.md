@@ -9,8 +9,7 @@
 </p>
 
 ### :computer: How To Run
-
- * Primeiro instale as dependencias:
+:
  ```bash
      executar com navegador
  ```
