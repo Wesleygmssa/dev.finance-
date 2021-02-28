@@ -9,6 +9,10 @@
     box-sizing: border-box; /* measure box */
 }
 
+html{
+    font-size: 93.75%; /* 15px */
+}
+
 body{
     background: #f0f2f5;
     font-family: 'Poppins', sans-serif;
@@ -31,6 +35,7 @@ body{
   width: min(90vw, 800px);
   margin: auto;
 }
+
 /* Titles ================================= */
 h2{
     margin-top: 3.2rem;
@@ -38,6 +43,22 @@ h2{
     color: var(--dark-blue);
     font-weight: normal;
 }
+
+/* links and buttons */
+a{
+    color: #49AA26;;
+    text-decoration: none;
+    transition: all 0.2s;
+
+}
+a:hover{
+    color: #3dd705;
+}
+
+ a.new{
+    display: inline-block;
+    margin-bottom: .8rem;
+}   
 
 /* header ================================= */
 header{
@@ -94,12 +115,20 @@ header{
 
  /* Table ================================= */
  #data-table{
+    display: block;
     width: 100%;
     border-spacing: 0 0.5rem;
+    overflow-x: auto; /* tranbordando */
  }
 
  table thead tr th:first-child,
  table tbody tr td:first-child{
+    border-radius: 0.5rem 0 0 0.5rem;
+
+ }
+
+ table thead tr th:last-child,
+ table tbody tr td:last-child{
     border-radius: 0.5rem 0 0 0.5rem;
 
  }
@@ -122,7 +151,7 @@ table tbody tr:hover{
 }
 
  table tbody td{
-     background: #ddd;
+     background: #ccc;
      padding: 1rem 2rem;
      font-weight: normal;
  }
@@ -149,3 +178,18 @@ footer{
     opacity: 0.6;
 }
 
+
+/* Responsive ================================= */
+
+/* 800px para cima */
+/* apartir de 800 ativa */
+@media(min-width: 800px){
+    html{
+        font-size: 87.5%; /* ? px */
+    }
+    #balance{
+        display: grid;
+       grid-template-columns: repeat(3, 1fr);
+       gap: 2rem;
+    }
+}
