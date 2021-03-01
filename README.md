@@ -5,12 +5,12 @@
 
 
 <p align="center">
-   <img src="dev_finance.png" >
+   <img src="dev_finance.jpeg" >
 </p>
 
 
 <p align="center">
-   <img src="dev_finance_form.png" >
+   <img src="dev_finance_form.jpeg" >
 </p>
 
 ### :computer: How To Run
