@@ -20,28 +20,6 @@ const Modal = {
     //podendo utilizar uma function toogle() 
 }
 
-//transações feitas
-const transactions = [{
-    id: 1,
-    description: 'luz',
-    amount: -50000,
-    date: '23/01/2021'
-},
-{
-    id: 2,
-    description: 'Website',
-    amount: 500000,
-    date: '23/01/2021'
-},
-{
-    id: 3,
-    description: 'luz',
-    amount: -20000,
-    date: '23/01/2021'
-
-}
-
-]
 
 // eu preciso somas as entras
 // depois eu preciso somar as saidas e
@@ -49,12 +27,34 @@ const transactions = [{
 // assim, eu terei o tatal
 const Transaction = {
 
-    all: transactions, // todos os dados
+    all: [{
+        description: 'luz',
+        amount: -50000,
+        date: '23/01/2021'
+    },
+    {
+        description: 'Website',
+        amount: 500000,
+        date: '23/01/2021'
+    },
+    {
+        description: 'luz',
+        amount: -20000,
+        date: '23/01/2021'
+
+    }
+
+    ], // todos os dados
 
 
     add(transactions) {
         Transaction.all.push(transactions)
 
+        App.reload();
+    },
+
+    remove(index) {
+        Transaction.all.splice(index, 1)
         App.reload();
     },
     incomes() {
@@ -81,19 +81,20 @@ const Transaction = {
     }
 }
 /*
-
-    Substituir os dados do HTML com os dados do JS
+Substituir os dados do HTML com os dados do JS
 */
 
 const DOM = {
     transactionContainer: document.querySelector('#data-table tbody'),
     addTransaction(transaction, index) {
         const tr = document.createElement('tr'); // criando um tr
-        tr.innerHTML = DOM.innerHTMLTransaction(transaction); // html a abaixo
+        tr.innerHTML = DOM.innerHTMLTransaction(transaction, index); // html a abaixo
+        tr.dataset.index = index
         DOM.transactionContainer.appendChild(tr); // adicinar dentro tbody
     },
 
-    innerHTMLTransaction(transaction) {
+    innerHTMLTransaction(transaction, index) {
+        //validação de class
         const CSSclass = transaction.amount > 0 ? "income" : 'expense';
 
         const amount = Utils.formatCurrency(transaction.amount)
@@ -103,7 +104,7 @@ const DOM = {
              <td class="${CSSclass}">${amount}</td>
              <td class="date">${transaction.date}</td>
              <td>
-                <img src="./assets/minus.svg" alt="">
+                <img onclik="Transaction.remove(${index})" src="./assets/minus.svg" alt="">
              </td>
         `
 
@@ -124,10 +125,17 @@ const DOM = {
         DOM.transactionContainer.innerHTML = "";
     }
 }
-
-
 //formatação de para moeda
 const Utils = {
+    formatAmuunt(value) {
+        value = Number(value.replace(/\,\./g, "")) * 100
+
+        return value
+    },
+    formatDate(date) {
+        const spittedDate = date.split("-");
+        return `${spittedDate[2]}/${spittedDate[1]}/${spittedDate[0]}`;
+    },
     formatCurrency(value) {
         const signal = Number(value) < 0 ? "-" : "";
         value = String(value).replace(/\D/g, ""); //pegando só os numeros
@@ -141,11 +149,73 @@ const Utils = {
     }
 }
 
+const Form = {
+    description: document.querySelector('#description'),
+    amount: document.querySelector('#amount'),
+    date: document.querySelector('#date'),
+
+    getValues() {
+        return {
+            description: Form.description.value,
+            amount: Form.amount.value,
+            date: Form.date.value
+        }
+    },
+
+    validateField() {
+        const { description, amount, date } = Form.getValues();
+
+        if (description.trim() === "" || amount.trim() === "" || date.trim() === "") {
+            throw new Error("Por favor, preencha todos os campos")
+        }
+    },
+
+    formatValues() {
+        let { description, amount, date } = Form.getValues();
+
+        amount = Utils.formatAmuunt(amount);
+
+        date = Utils.formatDate(date);
+
+        return {
+            description,
+            amount,
+            date
+
+        }
+
+    },
+
+    saveTransaction(transaction) {
+        Transaction.add(transaction)
+    },
+    clearFields() {
+        Form.description.value = '';
+        Form.amount.value = '';
+        Form.date.value = '';
+    },
+    submit(event) {
+        event.preventDefault();
+
+        try {
+            Form.validateField();
+            const transaction = Form.formatValues();
+            Form.saveTransaction(transaction);
+            Form.clearFields();
+            Modal.close();
+        } catch (err) {
+            alert(err.message)
+        }
+
+
+    }
+}
+
 const App = {
     init() {
         //objetos para tipos array para cada elemto executar uma funcionalidade
-        Transaction.all.forEach(function (transaction) {
-            DOM.addTransaction(transaction);
+        Transaction.all.forEach(function (transaction, index) {
+            DOM.addTransaction(transaction, index);
         })
 
         DOM.updateBalace();
@@ -156,17 +226,8 @@ const App = {
     reload() {
         DOM.clearTransactions();
         App.init();
-
     }
 }
 
 App.init();
-
-Transaction.add({
-    id: 4,
-    description: 'luz',
-    amount: -20000,
-    date: '23/01/2021'
-
-})
 
