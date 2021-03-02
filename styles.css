@@ -228,6 +228,7 @@ td.expense{
 
     opacity: 0;
     visibility: hidden;
+    z-index: 9999;
 
 }
 
@@ -243,10 +244,12 @@ td.expense{
     position: relative;
     width: 90%;
     max-width: 500px;
+    z-index: 99;
 }
  /* Form =============================== */
  #form{
      max-width: 500px;
+
  }
  
  #form h2{
@@ -282,10 +285,12 @@ td.expense{
 /* footer ================================= */
 
 footer{
+    position: relative;
     text-align: center;
     padding: 4rem 0 2rem;
     color: var(--dark-blue);
     opacity: 0.6;
+    z-index: 0;
 }
 
 

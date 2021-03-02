@@ -21,35 +21,27 @@ const Modal = {
 }
 
 
+
+const Storage = {
+    get() {
+        return JSON.parse(localStorage.getItem("dev.finances:transaction")) || [];
+    },
+    set(transactions) {
+        localStorage.setItem("dev.finances:transaction", JSON.stringify(transactions))
+    }
+}
+
 // eu preciso somas as entras
 // depois eu preciso somar as saidas e
 // remover adas entradas o valor das saidas
 // assim, eu terei o tatal
 const Transaction = {
 
-    all: [{
-        description: 'luz',
-        amount: -50000,
-        date: '23/01/2021'
-    },
-    {
-        description: 'Website',
-        amount: 500000,
-        date: '23/01/2021'
-    },
-    {
-        description: 'luz',
-        amount: -20000,
-        date: '23/01/2021'
-
-    }
-
-    ], // todos os dados
+    all: Storage.get(), // todos os dados
 
 
     add(transactions) {
         Transaction.all.push(transactions)
-
         App.reload();
     },
 
@@ -104,7 +96,7 @@ const DOM = {
              <td class="${CSSclass}">${amount}</td>
              <td class="date">${transaction.date}</td>
              <td>
-                <img onclik="Transaction.remove(${index})" src="./assets/minus.svg" alt="">
+                <img onclick="Transaction.remove(${index})" src="./assets/minus.svg" alt="">
              </td>
         `
 
@@ -211,6 +203,7 @@ const Form = {
     }
 }
 
+
 const App = {
     init() {
         //objetos para tipos array para cada elemto executar uma funcionalidade
@@ -220,8 +213,7 @@ const App = {
 
         DOM.updateBalace();
         // transactions.length
-
-
+        Storage.set(Transaction.all);
     },
     reload() {
         DOM.clearTransactions();
