@@ -120,7 +120,8 @@ const DOM = {
 //formatação de para moeda
 const Utils = {
     formatAmuunt(value) {
-        value = Number(value.replace(/\,\./g, "")) * 100
+        // value = Number(value.replace(/\,\./g, "")) * 100
+        value = Number(value) * 100
 
         return value
     },
